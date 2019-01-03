@@ -9,7 +9,7 @@ function pon_frase_en_span(data) {
   var texto = data['parse']['text']['*'];
 
   // Esto hace que los hipervinculos (que no utilizo) funcionen.
-  texto = texto.replace(/\/wiki\//g, "http://es.wikiquote.org/wiki/");
+  texto = texto.replace(/\/wiki\//g, "https://es.wikiquote.org/wiki/");
 
   // Para terminar, lo agrego al documento.
   texto = filtrar(texto);
@@ -26,7 +26,7 @@ function dame_frase_wikiquote() {
   var titulo = "{{" + month + date + "}}";
 
   if (navigator.onLine) {
-    var url = 'http://es.wikiquote.org/w/api.php?action=parse&text=';
+    var url = 'https://es.wikiquote.org/w/api.php?action=parse&text=';
     url += titulo + '&format=json&callback=pon_frase_en_span';
 
     var elem = document.createElement('script');
