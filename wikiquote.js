@@ -14,6 +14,10 @@ function pon_frase_en_span(data) {
   // Para terminar, lo agrego al documento.
   texto = filtrar(texto);
   document.getElementById("contenido").innerHTML = texto;
+
+  // Imagen de la frase
+  var imagen = data['parse']['images']['0'];
+  document.getElementById("imagen").src = "https://es.wikiquote.org/wiki/Plantilla:0103#/media/File:";
 };
 
 function dame_frase_wikiquote() {
