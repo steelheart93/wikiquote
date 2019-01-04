@@ -37,7 +37,7 @@ function dame_frase_wikiquote() {
   date = agregarCero(date);
 
   var titulo = "{{" + month + date + "}}";
-  var titulo = "{{0106}}";
+  // titulo = "{{0106}}";
 
   if (navigator.onLine) {
     var url = 'https://es.wikiquote.org/w/api.php?action=parse&text=';
