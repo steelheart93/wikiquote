@@ -11,13 +11,21 @@ function pon_frase_en_span(data) {
   // Esto hace que los hipervinculos (que no utilizo) funcionen.
   texto = texto.replace(/\/wiki\//g, "https://es.wikiquote.org/wiki/");
 
+  // Filtrar imagenes.
+  var regularExpression = /<img[^>]*>/g;
+  var imagenes = texto.match(regularExpression);
+
+  // Busco la ruta de la primera imagen.
+  var regularExpression1 = /src="[^"]*/g;
+  var src = imagenes[0].match(regularExpression1);
+  var imagen = src[0].replace('src="', "");
+
+  // Agrego la ruta de la imagen al documento.
+  document.getElementById("imagen").src = "https://" + imagen;
+
   // Para terminar, lo agrego al documento.
   texto = filtrar(texto);
   document.getElementById("contenido").innerHTML = texto;
-
-  // Imagen de la frase
-  var imagen = data['parse']['images']['0'];
-  document.getElementById("imagen").src = "https://es.wikiquote.org/wiki/Plantilla:0103#/media/File:";
 };
 
 function dame_frase_wikiquote() {
@@ -27,7 +35,9 @@ function dame_frase_wikiquote() {
 
   month = agregarCero(month);
   date = agregarCero(date);
+
   var titulo = "{{" + month + date + "}}";
+  var titulo = "{{0106}}";
 
   if (navigator.onLine) {
     var url = 'https://es.wikiquote.org/w/api.php?action=parse&text=';
@@ -75,8 +85,14 @@ function filtrar(frase) {
 
   // Ordeno todo.
   var c = cadenas[0];
-  var autor = cadenas[1];
-  var datos = cadenas[2];
+
+  cantidad = cadenas.length;
+  for (let i = 1; i < cantidad - 2; i++) {
+    c += "<br>" + cadenas[i];
+  }
+
+  var autor = cadenas[cantidad - 2];
+  var datos = cadenas[cantidad - 1];
 
   c = "<p style='font-size: 1.3em;'><span style='font-weight: bold;'>Frase del día: </span>\"" + c.trim() + "\".</p>";
   c += "<p style='font-style: italic;'><span style='font-weight: bold;'>Acerca del Autor: </span>" + autor + ";</p>";
