@@ -4,6 +4,10 @@
  * @version 2.0
  */
 
+function enlace() {
+  window.location = document.getElementById("imagen").src;
+}
+
 function pon_frase_en_span(data) {
   console.log(data);
   var texto = data['parse']['text']['*'];

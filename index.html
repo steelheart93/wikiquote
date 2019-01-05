@@ -10,6 +10,7 @@
         #imagen {
             display: block;
             margin: auto;
+            cursor: zoom-in;
         }
 
         span {
@@ -32,7 +33,7 @@
 </head>
 
 <body onload="dame_frase_wikiquote();">
-    <img id="imagen" src="imagen.jpg" alt="imagen del día" height="256">
+    <img id="imagen" src="imagen.jpg" alt="imagen del día" height="256" title="Abrir enlace de imagen" onclick="enlace();">
     <div id="contenido"></div>
     <script src="wikiquote.js"></script>
 </body>
