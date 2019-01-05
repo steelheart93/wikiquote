@@ -2,11 +2,38 @@
 
 <head>
     <title>wikiquote para iframe</title>
+    <style>
+        #contenido {
+            text-align: center;
+        }
+
+        #imagen {
+            display: block;
+            margin: auto;
+        }
+
+        span {
+            font-weight: bold;
+        }
+
+        #cadena {
+            font-size: 1.3em;
+        }
+
+        #autor {
+            font-style: italic;
+        }
+
+        #datos {
+            font-size: 0.7em;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body onload="dame_frase_wikiquote();">
-    <img id="imagen" src="imagen.jpg" alt="imagen del día" style="display: block; margin: auto;">
-    <span id="contenido" style="text-align: center;"></span>
+    <img id="imagen" src="imagen.jpg" alt="imagen del día" height="256">
+    <div id="contenido"></div>
     <script src="wikiquote.js"></script>
 </body>
 

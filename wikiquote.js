@@ -11,17 +11,16 @@ function pon_frase_en_span(data) {
   // Esto hace que los hipervinculos (que no utilizo) funcionen.
   texto = texto.replace(/\/wiki\//g, "https://es.wikiquote.org/wiki/");
 
-  // Filtrar imagenes.
-  var regularExpression = /<img[^>]*>/g;
-  var imagenes = texto.match(regularExpression);
+  // Filtro las claves de las imagenes.
+  var matches = texto.match(/thumb\/\w\/\w\w\//g);
 
   // Busco la ruta de la primera imagen.
-  var regularExpression1 = /src="[^"]*/g;
-  var src = imagenes[0].match(regularExpression1);
-  var imagen = src[0].replace('src="', "");
+  var regularExpression = /thumb/g;
+  var ruta = matches[0].replace(regularExpression, "https://upload.wikimedia.org/wikipedia/commons");
+  ruta += data['parse']['images']['0'];
 
   // Agrego la ruta de la imagen al documento.
-  document.getElementById("imagen").src = "https://" + imagen;
+  document.getElementById("imagen").src = ruta;
 
   // Para terminar, lo agrego al documento.
   texto = filtrar(texto);
@@ -94,9 +93,9 @@ function filtrar(frase) {
   var autor = cadenas[cantidad - 2];
   var datos = cadenas[cantidad - 1];
 
-  c = "<p style='font-size: 1.3em;'><span style='font-weight: bold;'>Frase del día: </span>\"" + c.trim() + "\".</p>";
-  c += "<p style='font-style: italic;'><span style='font-weight: bold;'>Acerca del Autor: </span>" + autor + ";</p>";
-  c += "<p style='font-size: 0.7em; font-style: italic;'>" + datos + "</p>";
+  c = "<p id='cadena'><span>Frase del día: </span>\"" + c.trim() + "\".</p>";
+  c += "<p id='autor'><span>Acerca del Autor: </span>" + autor + ";</p>";
+  c += "<p id='datos'>" + datos + "</p>";
 
   return c;
 }
