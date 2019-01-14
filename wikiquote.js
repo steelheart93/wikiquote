@@ -15,16 +15,20 @@ function pon_frase_en_span(data) {
   // Esto hace que los hipervinculos (que no utilizo) funcionen.
   texto = texto.replace(/\/wiki\//g, "https://es.wikiquote.org/wiki/");
 
-  // Filtro las claves de las imagenes.
-  var matches = texto.match(/thumb\/\w\/\w\w\//g);
+  if (data['parse']['images'].length > 2) {
+    // Filtro las claves de las imagenes.
+    var matches = texto.match(/thumb\/\w\/\w\w\//g);
 
-  // Busco la ruta de la primera imagen.
-  var regularExpression = /thumb/g;
-  var ruta = matches[0].replace(regularExpression, "https://upload.wikimedia.org/wikipedia/commons");
-  ruta += data['parse']['images']['0'];
+    // Busco la ruta de la primera imagen.
+    var regularExpression = /thumb/g;
+    var ruta = matches[0].replace(regularExpression, "https://upload.wikimedia.org/wikipedia/commons");
+    ruta += data['parse']['images']['0'];
 
-  // Agrego la ruta de la imagen al documento.
-  document.getElementById("imagen").src = ruta;
+    // Agrego la ruta de la imagen al documento.
+    document.getElementById("imagen").src = ruta;
+  } else {
+    document.getElementById("imagen").title = "No Image Available";
+  }
 
   // Para terminar, lo agrego al documento.
   texto = filtrar(texto);
