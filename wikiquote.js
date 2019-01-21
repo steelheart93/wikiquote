@@ -15,26 +15,47 @@ function pon_frase_en_span(data) {
   // Esto hace que los hipervinculos (que no utilizo) funcionen.
   texto = texto.replace(/\/wiki\//g, "https://es.wikiquote.org/wiki/");
 
-  if (data['parse']['images'].length > 2) {
+  // Cargo el arreglo de imagenes
+  var imagenes = data['parse']['images'];
+
+  // Verifico si hay imagenes disponibles.
+  if (imagenes.length > 2) {
+    // Elimino las últimas dos imagenes que no son necesarias.
+    imagenes.pop();
+    imagenes.pop();
+
     // Filtro las claves de las imagenes.
     var matches = texto.match(/thumb\/\w\/\w\w\//g);
 
-    // Busco la ruta de la primera imagen y compurebo errores.
+    // Busco la ruta de las imagenes.
     var regularExpression = /thumb/g;
     var ruta = matches[0].replace(regularExpression, "https://upload.wikimedia.org/wikipedia/commons");
-    
-    // Compruebo errores de carga. 
-    var imagen = new Image();
-		imagen.src = ruta + data['parse']['images']['0'];
- 
-		imagen.onload = function(){ 
-      // Agrego la ruta de la imagen al documento.
-      document.getElementById("imagen").src = imagen.src;
-		}
- 
-		imagen.onerror = function(){
-      document.getElementById("imagen").title = "No Image Available";
-		}
+
+    // Compruebo errores de carga.
+    cargadas = [];
+
+    for (const imagen of imagenes) {
+      var respuesta = fetch(ruta + imagen);
+      respuesta.then(function (r) {
+        console.log(r);
+        if (r.status != 404) {
+          cargadas.push(ruta + imagen);
+        } else {
+          console.error("error al cargar: " + ruta + imagen);
+        }
+      });
+    }
+
+    // Espero un segundo y agrego la imagen al documento.
+    setTimeout(function () {
+      console.log("imagenes cargadas sin errores: " + cargadas);
+
+      if (cargadas.length > 0) {
+        document.getElementById("imagen").src = cargadas[0];
+      } else {
+        document.getElementById("imagen").title = "No Image Available";
+      }
+    }, 1000);
   } else {
     document.getElementById("imagen").title = "No Image Available";
   }
@@ -53,7 +74,7 @@ function dame_frase_wikiquote() {
   date = agregarCero(date);
 
   var titulo = "{{" + month + date + "}}";
-  // titulo = "{{0106}}";
+  //titulo = "{{0121}}";
 
   if (navigator.onLine) {
     var url = 'https://es.wikiquote.org/w/api.php?action=parse&text=';
