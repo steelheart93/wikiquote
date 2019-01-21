@@ -19,13 +19,22 @@ function pon_frase_en_span(data) {
     // Filtro las claves de las imagenes.
     var matches = texto.match(/thumb\/\w\/\w\w\//g);
 
-    // Busco la ruta de la primera imagen.
+    // Busco la ruta de la primera imagen y compurebo errores.
     var regularExpression = /thumb/g;
     var ruta = matches[0].replace(regularExpression, "https://upload.wikimedia.org/wikipedia/commons");
-    ruta += data['parse']['images']['0'];
-
-    // Agrego la ruta de la imagen al documento.
-    document.getElementById("imagen").src = ruta;
+    
+    // Compruebo errores de carga. 
+    var imagen = new Image();
+		imagen.src = ruta + data['parse']['images']['0'];
+ 
+		imagen.onload = function(){ 
+      // Agrego la ruta de la imagen al documento.
+      document.getElementById("imagen").src = imagen.src;
+		}
+ 
+		imagen.onerror = function(){
+      document.getElementById("imagen").title = "No Image Available";
+		}
   } else {
     document.getElementById("imagen").title = "No Image Available";
   }
